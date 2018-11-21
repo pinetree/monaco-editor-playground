@@ -1,0 +1,1 @@
+/* Variables *//* Colors-------------------------- */@import "./colors";$--background-color: #f6f7f8;$--card-background-color: #fafafa;$--footer-background-color: $--color-gray;/* Font-------------------------- */$--font-family: 'Roboto', sans-serif;@import "./font-sizes";:export {  backgroundColor: $--background-color;  activeTextColor: $--color-gray;}
