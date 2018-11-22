@@ -50,7 +50,7 @@ class Editor extends Component {
         </div>
         <hr/>
         <MonacoEditor
-          height="500"
+          height="400"
           language="sol"
           value={code}
           options={options}

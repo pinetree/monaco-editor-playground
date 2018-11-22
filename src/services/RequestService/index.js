@@ -1,0 +1,1 @@
+const get = url => {  return fetch(url)    .then(res => res.json())    .catch(error => error)}export default { get }
