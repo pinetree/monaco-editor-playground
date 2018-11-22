@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import DropdownLanguage from 'components/DropdownLanguage'
+import logo from 'assets/img/logo.png'
 
 class Header extends Component {
   constructor (props) {
@@ -29,23 +30,13 @@ class Header extends Component {
     return (
       <header className={`header ${this.state.fixed ? 'noTrans' : ''}`}>
         <div className="row align-justify w1140">
-          <div className="header__mob-show-menu">
-            <button className="hamburger hamburger--slider">
-              <span
-                className="hamburger-box"
-                onClick={() => this.props.toggleMobileMenu()}
-              >
-                <span className="hamburger-inner" />
-              </span>
-            </button>
-          </div>
           <div className="flex-menu">
             <a className="logo" href="/">
-              &nbsp;
+             <img src={logo} alt="" />
             </a>
           </div>
           <div className="language-drop">
-            <DropdownLanguage down={true} />
+            <DropdownLanguage down={true}/>
           </div>
         </div>
       </header>

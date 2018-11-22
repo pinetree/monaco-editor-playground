@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 import ConnectedIntlProvider from './providers/ConnectedIntlProvider'
 
 import Header from 'layouts/Header'
-import Editor from 'components/Editor'
+import Lesson from 'layouts/Lesson'
 
 class App extends Component {
   render () {
@@ -16,17 +16,9 @@ class App extends Component {
           <React.Fragment>
             <Header>UBAI.CODE [Process -------] Language</Header>
             <main className="content">
-              <div className="row">
-                <div className="col-1-2">
-                  Lesson 1
-                  <p>text</p>
-                </div>
-                <div className="col-auto editor">
-                  <Editor/>
-                </div>
-              </div>
+              <Lesson/>
             </main>
-            <footer>Footer - Check - Next lesson </footer>
+            <footer>Lessons: 1, 2, 3, 4 </footer>
           </React.Fragment>
         </ConnectedIntlProvider>
       </Provider>

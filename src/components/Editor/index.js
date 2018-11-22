@@ -1,25 +1,30 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import MonacoEditor from 'react-monaco-editor'
 
 class Editor extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      code: 'pragma solidity ^0.4.25;\n' +
-        '\n' +
-        'contract HelloWorld {\n' +
-        '\n' +
-        '}',
+      code: props.code || ''
     }
   }
 
+  componentDidUpdate = (prevProps) => {
+    if(prevProps.code !== this.props.code)
+      this.setState({
+        code: this.props.code
+      })
+  }
+
   onChange = (newValue, e) => {
-    console.log('onChange', newValue, e) // eslint-disable-line no-console
+    // console.log('onChange', newValue, e) // eslint-disable-line no-console
+    this.props.onChangeCode(newValue)
   }
 
   editorDidMount = (editor) => {
     // eslint-disable-next-line no-console
-    console.log('editorDidMount', editor, editor.getValue(), editor.getModel())
+    // console.log('editorDidMount', editor, editor.getValue(), editor.getModel())
     this.editor = editor
   }
 
@@ -40,17 +45,13 @@ class Editor extends Component {
       roundedSelection: false,
       readOnly: false,
       cursorStyle: 'line',
-      automaticLayout: false,
+      automaticLayout: true,
+      scrollBeyondLastLine: false
     }
     return (
-      <div>
-        <div>
-          <button onClick={this.changeEditorValue}>Change value</button>
-          <button onClick={this.changeBySetState}>Change by setState</button>
-        </div>
-        <hr/>
+      <div className="editor-container">
         <MonacoEditor
-          height="400"
+          height="600"
           language="sol"
           value={code}
           options={options}
@@ -60,6 +61,16 @@ class Editor extends Component {
       </div>
     )
   }
+}
+
+Editor.propTypes = {
+  code: PropTypes.string,
+  onChangeCode: PropTypes.func
+}
+
+Editor.defaultProps = {
+  code: '',
+  onChangeCode: () => {}
 }
 
 export default Editor
