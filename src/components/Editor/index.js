@@ -51,7 +51,7 @@ class Editor extends Component {
     return (
       <div className="editor-container">
         <MonacoEditor
-          height="600"
+          height="300"
           language="sol"
           value={code}
           options={options}

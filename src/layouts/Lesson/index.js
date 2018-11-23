@@ -1,9 +1,19 @@
 import React, { Component } from 'react'
 import { isNil, find, findIndex, propEq } from 'ramda'
+import styled from 'styled-components'
 import Button from 'components/Button'
 import Editor from 'components/Editor'
 import Highlight from 'components/Highlight'
+import Character from 'layouts/Character'
+import Result from './Result'
 import decomment from 'decomment'
+
+const ButtonsWrapper = styled.div`
+  display: flex;
+  position: relative;
+  justify-content: center;
+  padding-top: 15px;
+`
 
 const Lessons = [
   {
@@ -70,7 +80,9 @@ class Lesson extends Component {
       isLoading: false,
       activeLesson: 1,
       activeTask: 1,
-      currentCode: ''
+      currentCode: '',
+      openResult: false,
+      currentResult: 0
     }
   }
 
@@ -153,29 +165,35 @@ class Lesson extends Component {
 
     if (!isNil(task)) {
       if (this.formatCode(task.target_code) !== this.formatCode(currentCode)) {
-        alert('Not passed!')
         _lessons[currentLessonIndex].tasks[currentTaskIndex].try += 1
         this.setState({
-          _lessons
+          _lessons, ...{ isResult: true }
         })
       }
       else {
-        alert('Passed')
         _lessons[currentLessonIndex].tasks[currentTaskIndex].passed = 1
         this.setState({
-          _lessons
+          _lessons, ...{ isResult: true }
         })
-        this.nextTask()
       }
     }
   }
 
+  closeResult = () => {
+    const task = this.currentTask()
+    this.setState({ isResult: false })
+
+    if(task.passed) this.nextTask()
+  }
+
+  onChangeInDiff = newCode => currentCode = newCode
+
   render () {
-    const { lessons, activeLesson, activeTask } = this.state
+    const { activeLesson, activeTask, isResult } = this.state
     const lesson = find(propEq('id', activeLesson), Lessons) || []
     const task = find(propEq('id', activeTask), lesson.tasks) || []
 
-    currentCode = currentCode != '' ? currentCode : task.code
+    currentCode = currentCode !== '' ? currentCode : task.code
 
     return (
       <div>
@@ -198,16 +216,24 @@ class Lesson extends Component {
           <div className="col-auto editor">
             <Editor code={currentCode} onChangeCode={this.onChangeCode}/>
 
-            <Button onClick={this.prevTask}>&laquo; Prev task</Button>
+            <Character/>
 
-            <Button
-              nature={task.passed ? 'green' : 'primary'}
-              disabled={task.passed ? true : false}
-              onClick={this.checkCode}>{task.passed ? 'Test passed' : 'Check answer'}</Button>
+            <ButtonsWrapper>
+              <Button onClick={this.prevTask}>&laquo; Prev task</Button>
+              <Button
+                nature={task.passed ? 'green' : 'primary'}
+                disabled={!!task.passed}
+                onClick={this.checkCode}>{task.passed ? 'Test passed' : 'Check answer'}</Button>
+              <Button onClick={this.nextTask}>Next task &raquo;</Button>
+            </ButtonsWrapper>
 
-            <Button onClick={this.nextTask}>Next task &raquo;</Button>
-
-            {task.try > 0 ? <p>Try: {task.try}</p> : ''}
+            <Result
+              opened={isResult}
+              onClose={() => this.closeResult()}
+              task={task}
+              code={currentCode}
+              onChange={newCode => this.onChangeInDiff(newCode)}
+            />
           </div>
         </div>
       </div>
