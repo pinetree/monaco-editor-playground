@@ -216,7 +216,7 @@ class Lesson extends Component {
           <div className="col-auto editor">
             <Editor code={currentCode} onChangeCode={this.onChangeCode}/>
 
-            <Character/>
+            <Character startRotate={task.passed == 1}/>
 
             <ButtonsWrapper>
               <Button onClick={this.prevTask}>&laquo; Prev task</Button>
